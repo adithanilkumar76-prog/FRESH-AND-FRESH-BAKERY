@@ -1,0 +1,1649 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>FRESH AND FRESH BAKERY | Kunhimangalam, Payyannur (Takeaway & UPI)</title>
+
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=Space+Grotesk:wght@500;600;700;800&family=Playfair+Display:ital,wght@0,600;0,700;1,600&family=Courier+Prime:wght@400;700&display=swap" rel="stylesheet">
+
+  <!-- Lucide Icons -->
+  <script src="https://unpkg.com/lucide@latest"></script>
+  <!-- Canvas Confetti -->
+  <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+  <!-- Tailwind CSS -->
+  <script src="https://cdn.tailwindcss.com"></script>
+
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            midnight: '#07050d',
+            surface: '#110b1e',
+            cardBg: '#181028',
+            cardBorder: '#321c54',
+            violetGlow: '#9333ea',
+            neonViolet: '#c026d3',
+            electricPink: '#ec4899',
+            brandPurple: '#7c3aed',
+          },
+          fontFamily: {
+            sans: ['"Plus Jakarta Sans"', 'sans-serif'],
+            display: ['"Space Grotesk"', 'sans-serif'],
+            serif: ['"Playfair Display"', 'serif'],
+            mono: ['"Courier Prime"', 'monospace'],
+          }
+        }
+      }
+    }
+  </script>
+
+  <style>
+    /* Custom Scrollbar */
+    ::-webkit-scrollbar {
+      width: 7px;
+    }
+    ::-webkit-scrollbar-track {
+      background: #07050d;
+    }
+    ::-webkit-scrollbar-thumb {
+      background: linear-gradient(180deg, #7c3aed, #c026d3);
+      border-radius: 9999px;
+    }
+
+    /* Ambient Black & Violet Mesh */
+    .bg-violet-canvas {
+      background-color: #07050d;
+      background-image:
+        radial-gradient(circle at 15% 15%, rgba(124, 58, 237, 0.18) 0%, transparent 45%),
+        radial-gradient(circle at 85% 35%, rgba(192, 38, 211, 0.16) 0%, transparent 40%),
+        radial-gradient(circle at 50% 80%, rgba(124, 58, 237, 0.12) 0%, transparent 50%),
+        linear-gradient(rgba(255, 255, 255, 0.02) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(255, 255, 255, 0.02) 1px, transparent 1px);
+      background-size: 100% 100%, 100% 100%, 100% 100%, 32px 32px, 32px 32px;
+    }
+
+    .glass-header {
+      background: rgba(7, 5, 13, 0.92);
+      backdrop-filter: blur(18px);
+      -webkit-backdrop-filter: blur(18px);
+      border-bottom: 1px solid rgba(147, 51, 234, 0.22);
+    }
+
+    .gradient-violet-text {
+      background: linear-gradient(135deg, #ffffff 15%, #e9d5ff 55%, #c084fc 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    .glass-card {
+      background: linear-gradient(145deg, rgba(24, 16, 40, 0.9) 0%, rgba(17, 11, 30, 0.95) 100%);
+      border: 1px solid rgba(124, 58, 237, 0.22);
+      backdrop-filter: blur(10px);
+    }
+
+    .glass-card:hover {
+      border-color: rgba(192, 38, 211, 0.45);
+      box-shadow: 0 12px 30px -10px rgba(124, 58, 237, 0.35);
+    }
+
+    /* Print styles for digital bill */
+    @media print {
+      body * {
+        visibility: hidden !important;
+      }
+      #printableReceiptArea, #printableReceiptArea * {
+        visibility: visible !important;
+      }
+      #printableReceiptArea {
+        position: absolute !important;
+        left: 0 !important;
+        top: 0 !important;
+        width: 100% !important;
+        background: #ffffff !important;
+        color: #000000 !important;
+        padding: 20px !important;
+      }
+      .no-print {
+        display: none !important;
+      }
+    }
+  </style>
+</head>
+
+<body class="bg-violet-canvas text-slate-100 font-sans antialiased selection:bg-brandPurple selection:text-white pb-24 lg:pb-0">
+
+  <!-- Top Announcement Bar -->
+  <aside aria-label="Takeaway and Contact Bar" class="bg-gradient-to-r from-midnight via-surface to-midnight border-b border-brandPurple/30 text-slate-200 py-2 px-3 text-xs font-semibold">
+    <div class="max-w-7xl mx-auto flex flex-wrap items-center justify-between gap-2.5">
+      <div class="flex items-center gap-2 flex-wrap">
+        <span class="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full text-[10px] font-extrabold uppercase tracking-wider bg-neonViolet/20 text-neonViolet border border-neonViolet/40">
+          <span class="w-1.5 h-1.5 rounded-full bg-neonViolet animate-ping"></span>
+          Takeaway Only
+        </span>
+        <span class="text-white/80 text-[11px] sm:text-xs">
+          Daily Timings: <strong class="text-white font-bold">9:30 AM – 10:30 PM</strong>
+        </span>
+        <span id="liveStatusPill" class="inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-[10px] font-bold bg-white/10 text-white">
+          Checking...
+        </span>
+        <span class="hidden sm:inline-flex items-center gap-1 text-[11px] text-purple-300 font-bold bg-brandPurple/20 px-2 py-0.5 rounded border border-brandPurple/30">
+          <i data-lucide="qr-code" class="w-3 h-3"></i> UPI &amp; Cash Accepted
+        </span>
+      </div>
+
+      <div class="flex items-center gap-4 text-[11px] font-bold">
+        <a href="tel:9847085553" class="text-white hover:text-purple-300 transition-colors flex items-center gap-1.5">
+          <i data-lucide="phone" class="w-3.5 h-3.5 text-purple-400"></i>
+          <span>9847085553</span>
+        </a>
+        <span class="text-white/30">•</span>
+        <a href="https://wa.me/918921806076?text=Hello%20Fresh%20and%20Fresh%20Bakery,%20I%20would%20like%20to%20order%20takeaway" target="_blank" class="text-emerald-400 hover:text-emerald-300 transition-colors flex items-center gap-1.5">
+          <i data-lucide="message-circle" class="w-3.5 h-3.5 text-emerald-400"></i>
+          <span>WhatsApp: 8921806076</span>
+        </a>
+      </div>
+    </div>
+  </aside>
+
+  <!-- Sticky Navbar -->
+  <header class="sticky top-0 z-40 glass-header shadow-xl">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="flex items-center justify-between h-20">
+        
+        <!-- Brand Identity -->
+        <a href="#" class="flex items-center gap-3 group">
+          <div class="w-11 h-11 rounded-2xl bg-gradient-to-br from-brandPurple via-neonViolet to-electricPink flex items-center justify-center text-white shadow-lg shadow-brandPurple/40 group-hover:scale-105 transition-transform border border-white/20">
+            <i data-lucide="croissant" class="w-6 h-6"></i>
+          </div>
+          <div>
+            <span class="font-display text-lg sm:text-2xl font-extrabold tracking-tight text-white block leading-tight group-hover:text-purple-300 transition-colors">
+              FRESH AND FRESH BAKERY
+            </span>
+            <span class="text-[11px] font-semibold text-purple-300 flex items-center gap-1 tracking-wide uppercase">
+              <i data-lucide="map-pin" class="w-3 h-3 text-neonViolet"></i>
+              Kunhimangalam, Payyannur, Kannur
+            </span>
+          </div>
+        </a>
+
+        <!-- Desktop Navigation -->
+        <nav class="hidden lg:flex items-center gap-7 text-sm font-semibold text-slate-200">
+          <a href="#menu-section" class="hover:text-purple-300 transition-colors">Bakery Menu</a>
+          <a href="#puffs-special" class="hover:text-purple-300 transition-colors flex items-center gap-1">
+            <span class="px-2 py-0.5 rounded bg-brandPurple/30 text-purple-300 text-xs border border-brandPurple/40">Egg Puff ₹15</span>
+          </a>
+          <a href="#custom-cakes" class="hover:text-purple-300 transition-colors">Celebration Cakes</a>
+          <a href="#payment-info" class="hover:text-purple-300 transition-colors flex items-center gap-1">
+            <span class="w-1.5 h-1.5 rounded-full bg-emerald-400"></span> UPI &amp; Bill
+          </a>
+          <a href="#store-info" class="hover:text-purple-300 transition-colors">Timings &amp; Map</a>
+        </nav>
+
+        <!-- Right Quick Actions -->
+        <div class="flex items-center gap-3">
+          <a 
+            href="tel:9847085553" 
+            class="hidden sm:inline-flex items-center gap-1.5 px-4 py-2 rounded-full bg-white/10 hover:bg-white/20 text-white text-xs font-bold border border-purple-400/30 transition-all active:scale-95"
+          >
+            <i data-lucide="phone-call" class="w-3.5 h-3.5 text-purple-300"></i>
+            <span>Call 9847085553</span>
+          </a>
+
+          <!-- Cart Drawer Button -->
+          <button 
+            onclick="toggleCart(true)" 
+            class="relative flex items-center gap-2 px-4 py-2.5 rounded-full bg-gradient-to-r from-brandPurple to-neonViolet hover:from-purple-600 hover:to-fuchsia-600 text-white font-bold text-xs shadow-lg shadow-purple-900/40 border border-white/20 active:scale-95 transition-all"
+            aria-label="View Takeaway Parcel"
+          >
+            <i data-lucide="shopping-bag" class="w-4 h-4"></i>
+            <span class="hidden sm:inline" id="navCartTotal">₹0</span>
+            <span id="navCartBadge" class="w-5 h-5 rounded-full bg-white text-midnight font-extrabold text-[11px] flex items-center justify-center">
+              0
+            </span>
+          </button>
+        </div>
+
+      </div>
+    </div>
+  </header>
+
+
+  <!-- Hero Section -->
+  <section class="relative pt-10 pb-14 md:pt-16 md:pb-20 overflow-hidden">
+    <div class="absolute -top-20 left-1/2 -translate-x-1/2 w-[700px] h-[360px] bg-brandPurple/20 blur-[130px] rounded-full pointer-events-none -z-10"></div>
+
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="grid grid-cols-1 lg:grid-cols-12 gap-10 items-center">
+        
+        <!-- Left Hero Copy -->
+        <div class="lg:col-span-7 space-y-6 text-center lg:text-left">
+          
+          <div class="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-surface border border-brandPurple/40 text-xs font-semibold text-purple-300 shadow-inner">
+            <span class="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>
+            <span>Indian &amp; Kerala Bakery Counter • Kunhimangalam, Payyannur</span>
+          </div>
+
+          <h1 class="font-display text-3xl sm:text-5xl lg:text-6xl font-extrabold text-white leading-tight tracking-tight">
+            Crispy Hot Puffs, Warm Breads &amp; Cakes. <br>
+            <span class="gradient-violet-text font-serif italic">Fresh and Fresh Bakery</span>
+          </h1>
+
+          <p class="text-slate-300 text-sm sm:text-base max-w-xl mx-auto lg:mx-0 leading-relaxed font-normal">
+            Authentic Indian bakery counter treats at genuine everyday prices. Golden egg &amp; veg puffs starting at just <strong class="text-white font-bold underline decoration-brandPurple decoration-2">₹15</strong>, traditional Kerala tea snacks, soft milk breads, and fresh celebration cakes. Now pay conveniently via <strong class="text-purple-300 font-bold">UPI Online</strong> or <strong class="text-purple-300 font-bold">Cash on Takeaway</strong> with instant digital bill receipt!
+          </p>
+
+          <!-- TAKEAWAY STATUS & UPI HIGHLIGHT -->
+          <div class="p-4 sm:p-5 rounded-2xl glass-card border border-brandPurple/40 text-left flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
+            <div class="flex items-center gap-3.5">
+              <div class="w-12 h-12 rounded-xl bg-gradient-to-br from-brandPurple to-neonViolet flex items-center justify-center text-white shrink-0 shadow-md shadow-brandPurple/30">
+                <i data-lucide="package-check" class="w-6 h-6"></i>
+              </div>
+              <div>
+                <div class="flex items-center gap-2">
+                  <span class="text-xs font-bold uppercase tracking-wider text-neonViolet font-display">Service Model</span>
+                  <span class="text-[10px] font-bold px-2 py-0.5 rounded-full bg-white/10 text-white">Strictly Takeaway Only</span>
+                </div>
+                <h2 class="text-sm font-bold text-white mt-0.5">Counter Collection • 9:30 AM to 10:30 PM</h2>
+                <p class="text-xs text-slate-300">UPI ID: <code class="text-purple-300 font-mono font-bold bg-white/5 px-1 rounded">paytm.s1tulls@pty</code> or Cash at Pickup.</p>
+              </div>
+            </div>
+            <a 
+              href="#menu-section" 
+              class="w-full sm:w-auto px-4 py-2.5 rounded-xl bg-white text-midnight hover:bg-slate-100 font-bold text-xs text-center transition-all shrink-0 active:scale-95"
+            >
+              Order Parcel
+            </a>
+          </div>
+
+          <!-- CTAs -->
+          <div class="flex flex-col sm:flex-row items-center justify-center lg:justify-start gap-3.5 pt-1">
+            <a 
+              href="https://wa.me/918921806076?text=Hello%20Fresh%20and%20Fresh%20Bakery,%20I%20would%20like%20to%20order%20takeaway" 
+              target="_blank" 
+              class="w-full sm:w-auto px-7 py-3.5 rounded-full bg-gradient-to-r from-emerald-600 to-teal-600 hover:from-emerald-500 hover:to-teal-500 text-white font-bold text-sm shadow-lg shadow-emerald-900/40 transition-all flex items-center justify-center gap-2 hover:-translate-y-0.5"
+            >
+              <i data-lucide="message-circle" class="w-4 h-4"></i>
+              <span>WhatsApp Takeaway (8921806076)</span>
+            </a>
+
+            <a 
+              href="tel:9847085553" 
+              class="w-full sm:w-auto px-7 py-3.5 rounded-full bg-white text-midnight hover:bg-slate-100 font-bold text-sm transition-all flex items-center justify-center gap-2 hover:-translate-y-0.5 shadow-lg"
+            >
+              <i data-lucide="phone" class="w-4 h-4 text-brandPurple"></i>
+              <span>Call: 9847085553</span>
+            </a>
+          </div>
+
+        </div>
+
+        <!-- Right Highlight Card: Indian Bakery Puff Counter -->
+        <div id="puffs-special" class="lg:col-span-5">
+          <div class="p-1 rounded-3xl bg-gradient-to-b from-brandPurple via-neonViolet/50 to-midnight shadow-2xl">
+            <div class="bg-midnight rounded-[22px] p-5 space-y-4">
+              
+              <div class="relative h-60 w-full rounded-2xl overflow-hidden bg-surface">
+                <img 
+                  src="https://images.unsplash.com/photo-1608198093002-ad4e005484ec?auto=format&fit=crop&w=800&q=80" 
+                  alt="Crispy Kerala Egg and Chicken Puffs at Fresh and Fresh Bakery" 
+                  class="w-full h-full object-cover"
+                >
+                <div class="absolute inset-0 bg-gradient-to-t from-midnight via-midnight/40 to-transparent"></div>
+                <span class="absolute top-3 left-3 px-3 py-1 rounded-full bg-midnight/90 border border-brandPurple text-white text-[11px] font-bold backdrop-blur-md">
+                  ⭐ Kunhimangalam Hot Batch
+                </span>
+                <div class="absolute bottom-3 left-3 right-3 text-white">
+                  <span class="text-[11px] uppercase tracking-wider text-purple-300 font-bold">Counter Favorite</span>
+                  <h2 class="font-display text-xl font-bold">Golden Egg &amp; Veg Puffs</h2>
+                  <p class="text-xs text-slate-300">Layered flaky puff pastry baked to golden perfection.</p>
+                </div>
+              </div>
+
+              <!-- Quick Price Badges -->
+              <div class="grid grid-cols-2 gap-2 text-xs">
+                <div class="p-2.5 rounded-xl bg-surface border border-brandPurple/30 flex items-center justify-between">
+                  <span class="text-slate-300 font-medium">Egg Puff</span>
+                  <span class="text-white font-extrabold text-sm text-purple-300">₹15</span>
+                </div>
+                <div class="p-2.5 rounded-xl bg-surface border border-brandPurple/30 flex items-center justify-between">
+                  <span class="text-slate-300 font-medium">Veg Puff</span>
+                  <span class="text-white font-extrabold text-sm text-purple-300">₹15</span>
+                </div>
+                <div class="p-2.5 rounded-xl bg-surface border border-brandPurple/30 flex items-center justify-between">
+                  <span class="text-slate-300 font-medium">Chicken Puff</span>
+                  <span class="text-white font-extrabold text-sm text-purple-300">₹25</span>
+                </div>
+                <div class="p-2.5 rounded-xl bg-surface border border-brandPurple/30 flex items-center justify-between">
+                  <span class="text-slate-300 font-medium">Meat Puff</span>
+                  <span class="text-white font-extrabold text-sm text-purple-300">₹25</span>
+                </div>
+              </div>
+
+              <button 
+                onclick="quickAdd(101)" 
+                class="w-full py-2.5 rounded-xl bg-gradient-to-r from-brandPurple to-neonViolet hover:from-purple-600 hover:to-fuchsia-600 text-white font-bold text-xs flex items-center justify-center gap-2 transition-all active:scale-95 shadow-md"
+              >
+                <i data-lucide="plus" class="w-4 h-4"></i>
+                <span>Add Egg Puff (₹15) to Takeaway Parcel</span>
+              </button>
+
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+
+  <!-- Timings Strip -->
+  <section class="py-6 border-y border-brandPurple/30 bg-surface/50">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="flex flex-col md:flex-row items-center justify-between gap-4">
+        
+        <div class="flex items-center gap-3 text-center md:text-left">
+          <div class="w-10 h-10 rounded-xl bg-brandPurple/20 border border-brandPurple/40 text-purple-300 flex items-center justify-center shrink-0">
+            <i data-lucide="clock" class="w-5 h-5"></i>
+          </div>
+          <div>
+            <h3 class="font-display text-sm font-bold text-white">Counter Timings: 9:30 AM to 10:30 PM</h3>
+            <p class="text-xs text-slate-300">Open all 7 days for counter parcels &amp; advance phone bookings in Kunhimangalam.</p>
+          </div>
+        </div>
+
+        <!-- Live Status Display -->
+        <div class="flex items-center gap-3">
+          <div id="liveClockBadge" class="px-3.5 py-1.5 rounded-full bg-midnight border border-brandPurple/40 text-xs font-mono text-slate-200">
+            --:-- IST
+          </div>
+          <div id="liveOpenBadge" class="px-3.5 py-1.5 rounded-full text-xs font-bold border flex items-center gap-1.5">
+            <span class="w-2 h-2 rounded-full animate-ping"></span>
+            <span>Checking...</span>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+
+  <!-- Online Payment & Digital Bill Banner -->
+  <section id="payment-info" class="py-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <div class="p-6 rounded-3xl bg-gradient-to-r from-surface via-cardBg to-surface border border-brandPurple/40 shadow-xl">
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-6 items-center">
+        
+        <div class="flex items-start gap-4">
+          <div class="w-12 h-12 rounded-2xl bg-emerald-500/20 border border-emerald-500/40 text-emerald-400 flex items-center justify-center shrink-0">
+            <i data-lucide="qr-code" class="w-6 h-6"></i>
+          </div>
+          <div>
+            <h4 class="font-display font-bold text-white text-sm">UPI Online Payment</h4>
+            <p class="text-xs text-slate-300 mt-1">Instant QR scan or UPI intent via GPay, PhonePe, Paytm with ID <span class="text-emerald-400 font-mono font-bold">paytm.s1tulls@pty</span>.</p>
+          </div>
+        </div>
+
+        <div class="flex items-start gap-4">
+          <div class="w-12 h-12 rounded-2xl bg-brandPurple/20 border border-brandPurple/40 text-purple-300 flex items-center justify-center shrink-0">
+            <i data-lucide="wallet" class="w-6 h-6"></i>
+          </div>
+          <div>
+            <h4 class="font-display font-bold text-white text-sm">Cash on Takeaway</h4>
+            <p class="text-xs text-slate-300 mt-1">Prefer cash? Select "Cash on Takeaway" in cart and pay easily directly at the counter upon parcel collection.</p>
+          </div>
+        </div>
+
+        <div class="flex items-start gap-4">
+          <div class="w-12 h-12 rounded-2xl bg-neonViolet/20 border border-neonViolet/40 text-neonViolet flex items-center justify-center shrink-0">
+            <i data-lucide="receipt" class="w-6 h-6"></i>
+          </div>
+          <div>
+            <h4 class="font-display font-bold text-white text-sm">Proof of Payment &amp; Bill</h4>
+            <p class="text-xs text-slate-300 mt-1">Receive an instant digital bill with Token #, date, itemized prices, verified payment status &amp; WhatsApp copy!</p>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+
+  <!-- Menu Section -->
+  <section id="menu-section" class="py-14 sm:py-20 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <div class="flex flex-col md:flex-row md:items-end justify-between gap-4 mb-8">
+      <div>
+        <div class="flex items-center gap-2">
+          <span class="text-xs font-bold uppercase tracking-widest text-purple-400 font-display">Affordable Indian Bakery Counter</span>
+          <span class="text-[10px] font-bold px-2 py-0.5 rounded bg-neonViolet/20 text-neonViolet border border-neonViolet/30">Takeaway Only</span>
+        </div>
+        <h2 class="font-display text-3xl sm:text-4xl font-extrabold text-white mt-1">Our Bakery Menu</h2>
+        <p class="text-xs sm:text-sm text-slate-300 mt-1">Select your fresh snacks, pay via UPI or Cash, and generate your takeaway bill.</p>
+      </div>
+
+      <!-- Search Input -->
+      <div class="relative w-full md:w-72">
+        <i data-lucide="search" class="w-4 h-4 absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-400"></i>
+        <input 
+          id="menuSearch" 
+          type="text" 
+          placeholder="Search egg puff, buns, honey cake..." 
+          class="w-full bg-surface text-xs pl-9 pr-3 py-2.5 rounded-full border border-brandPurple/40 focus:outline-none focus:ring-2 focus:ring-brandPurple text-white shadow-inner placeholder:text-slate-400"
+          oninput="handleSearch(this.value)"
+        >
+      </div>
+    </div>
+
+    <!-- Category Tabs -->
+    <div class="flex items-center gap-2 overflow-x-auto pb-3 mb-8 border-b border-brandPurple/30">
+      <button onclick="setCategory('all')" class="cat-btn active whitespace-nowrap px-4 py-2 rounded-full text-xs font-bold bg-white text-midnight transition-all shadow" data-category="all">
+        All Items
+      </button>
+      <button onclick="setCategory('puffs')" class="cat-btn whitespace-nowrap px-4 py-2 rounded-full text-xs font-bold bg-surface text-slate-300 hover:text-white border border-brandPurple/30 transition-all" data-category="puffs">
+        🥟 Hot Puffs (₹15+)
+      </button>
+      <button onclick="setCategory('teasnacks')" class="cat-btn whitespace-nowrap px-4 py-2 rounded-full text-xs font-bold bg-surface text-slate-300 hover:text-white border border-brandPurple/30 transition-all" data-category="teasnacks">
+        ☕ Kerala Chaya Kadi
+      </button>
+      <button onclick="setCategory('breads')" class="cat-btn whitespace-nowrap px-4 py-2 rounded-full text-xs font-bold bg-surface text-slate-300 hover:text-white border border-brandPurple/30 transition-all" data-category="breads">
+        🍞 Breads &amp; Buns
+      </button>
+      <button onclick="setCategory('cakes')" class="cat-btn whitespace-nowrap px-4 py-2 rounded-full text-xs font-bold bg-surface text-slate-300 hover:text-white border border-brandPurple/30 transition-all" data-category="cakes">
+        🍰 Cakes &amp; Pastries
+      </button>
+      <button onclick="setCategory('biscuits')" class="cat-btn whitespace-nowrap px-4 py-2 rounded-full text-xs font-bold bg-surface text-slate-300 hover:text-white border border-brandPurple/30 transition-all" data-category="biscuits">
+        🍪 Biscuits &amp; Sweets
+      </button>
+    </div>
+
+    <!-- Menu Items Grid -->
+    <div id="menuGrid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-5">
+      <!-- Injected via JavaScript -->
+    </div>
+
+    <!-- Empty Search View -->
+    <div id="noResults" class="hidden text-center py-16">
+      <div class="w-14 h-14 rounded-full bg-surface border border-brandPurple/40 text-purple-300 flex items-center justify-center mx-auto mb-3">
+        <i data-lucide="sparkles" class="w-6 h-6"></i>
+      </div>
+      <h3 class="font-display text-lg font-bold text-white">No items found</h3>
+      <p class="text-xs text-slate-400 mt-1">Try another keyword or view all items.</p>
+      <button onclick="resetFilters()" class="mt-4 px-4 py-2 rounded-full bg-white text-midnight text-xs font-bold">
+        Show All Items
+      </button>
+    </div>
+  </section>
+
+
+  <!-- Custom Celebration Cake Studio -->
+  <section id="custom-cakes" class="py-14 sm:py-20 bg-surface/40 border-y border-brandPurple/30">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      
+      <div class="text-center max-w-2xl mx-auto mb-10">
+        <span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-bold text-purple-300 bg-brandPurple/20 border border-brandPurple/40 uppercase tracking-widest font-display">
+          <i data-lucide="cake" class="w-3.5 h-3.5 text-neonViolet"></i> Celebration Cake Booking
+        </span>
+        <h2 class="font-display text-3xl sm:text-4xl font-extrabold text-white mt-2">
+          Order Birthday &amp; Celebration Cakes
+        </h2>
+        <p class="text-xs sm:text-sm text-slate-300 mt-1.5">
+          Fresh cream cakes baked daily for counter pickup. Starting at ₹350 for 0.5 kg and ₹650 for 1.0 kg!
+        </p>
+      </div>
+
+      <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-center">
+        
+        <!-- Live Cake Inscription Visualizer -->
+        <div class="lg:col-span-5 glass-card p-6 rounded-3xl border border-brandPurple/40 flex flex-col items-center">
+          <div class="w-full flex items-center justify-between text-xs font-bold text-purple-300 mb-4">
+            <span>PREVIEW</span>
+            <span id="cakeWeightTag" class="px-2 py-0.5 rounded bg-white/10 text-white">1.0 Kg Special</span>
+          </div>
+
+          <!-- Cake Illustration -->
+          <div class="w-full h-56 rounded-2xl bg-midnight/90 border border-brandPurple/30 flex flex-col items-center justify-end pb-6 relative overflow-hidden">
+            <!-- Candle -->
+            <div class="flex flex-col items-center mb-1">
+              <div class="w-2 h-3 bg-amber-400 rounded-full animate-bounce"></div>
+              <div class="w-1.5 h-4 bg-pink-400 rounded-t-sm"></div>
+            </div>
+            <!-- Cake Tier -->
+            <div id="cakeColorTier" class="w-48 h-20 rounded-2xl shadow-xl flex flex-col items-center justify-center p-2 border-t-4 border-white/60 transition-colors" style="background-color: #3b1e15;">
+              <span id="pipedMessagePreview" class="text-xs font-serif font-bold text-white bg-black/60 px-3 py-0.5 rounded-full border border-white/20 truncate max-w-[90%]">
+                Happy Birthday!
+              </span>
+              <span id="cakeFlavorName" class="text-[10px] text-white/80 font-bold uppercase mt-1">Black Forest</span>
+            </div>
+            <!-- Base Stand -->
+            <div class="w-56 h-2.5 bg-gradient-to-r from-purple-400 via-white to-purple-400 rounded-t mt-1"></div>
+            <div class="w-28 h-2 bg-purple-900 rounded-b"></div>
+          </div>
+
+          <div class="w-full mt-4 pt-3 border-t border-brandPurple/30 flex items-center justify-between">
+            <div>
+              <p class="text-[11px] text-slate-400 uppercase font-semibold">Takeaway Rate</p>
+              <p class="font-display text-2xl font-extrabold text-white" id="cakePriceTag">₹650</p>
+            </div>
+            <button 
+              onclick="addCustomCakeToCart()" 
+              class="px-5 py-2.5 rounded-full bg-white text-midnight hover:bg-slate-100 font-bold text-xs flex items-center gap-1.5 shadow active:scale-95 transition-all"
+            >
+              <i data-lucide="plus" class="w-4 h-4 text-brandPurple"></i>
+              <span>Add Cake to Parcel</span>
+            </button>
+          </div>
+        </div>
+
+        <!-- Cake Selection Form -->
+        <div class="lg:col-span-7 glass-card p-6 sm:p-8 rounded-3xl border border-brandPurple/40 space-y-5">
+          
+          <!-- Flavor Choice -->
+          <div>
+            <label class="block text-xs font-bold uppercase tracking-wider text-white font-display mb-2">1. Choose Flavor</label>
+            <div class="grid grid-cols-2 sm:grid-cols-3 gap-2 text-xs">
+              <button type="button" onclick="selectCakeFlavor('Black Forest', '#3b1e15', 350, 650, this)" class="flavor-btn active p-3 rounded-xl border border-brandPurple bg-brandPurple/30 font-bold text-white text-left">
+                Black Forest
+                <span class="block text-[11px] text-purple-300 font-normal">0.5kg ₹350 / 1kg ₹650</span>
+              </button>
+              <button type="button" onclick="selectCakeFlavor('White Forest', '#f3e8ff', 350, 650, this)" class="flavor-btn p-3 rounded-xl border border-brandPurple/30 bg-surface font-bold text-slate-300 text-left hover:border-brandPurple">
+                White Forest
+                <span class="block text-[11px] text-purple-300 font-normal">0.5kg ₹350 / 1kg ₹650</span>
+              </button>
+              <button type="button" onclick="selectCakeFlavor('Butterscotch', '#d97706', 360, 680, this)" class="flavor-btn p-3 rounded-xl border border-brandPurple/30 bg-surface font-bold text-slate-300 text-left hover:border-brandPurple">
+                Butterscotch
+                <span class="block text-[11px] text-purple-300 font-normal">0.5kg ₹360 / 1kg ₹680</span>
+              </button>
+              <button type="button" onclick="selectCakeFlavor('Red Velvet', '#991b1b', 400, 750, this)" class="flavor-btn p-3 rounded-xl border border-brandPurple/30 bg-surface font-bold text-slate-300 text-left hover:border-brandPurple">
+                Red Velvet
+                <span class="block text-[11px] text-purple-300 font-normal">0.5kg ₹400 / 1kg ₹750</span>
+              </button>
+              <button type="button" onclick="selectCakeFlavor('Rich Chocolate Truffle', '#1f130b', 400, 750, this)" class="flavor-btn p-3 rounded-xl border border-brandPurple/30 bg-surface font-bold text-slate-300 text-left hover:border-brandPurple">
+                Chocolate Truffle
+                <span class="block text-[11px] text-purple-300 font-normal">0.5kg ₹400 / 1kg ₹750</span>
+              </button>
+              <button type="button" onclick="selectCakeFlavor('Pineapple Fresh Cream', '#ca8a04', 330, 600, this)" class="flavor-btn p-3 rounded-xl border border-brandPurple/30 bg-surface font-bold text-slate-300 text-left hover:border-brandPurple">
+                Pineapple Cream
+                <span class="block text-[11px] text-purple-300 font-normal">0.5kg ₹330 / 1kg ₹600</span>
+              </button>
+            </div>
+          </div>
+
+          <!-- Weight Choice -->
+          <div>
+            <label class="block text-xs font-bold uppercase tracking-wider text-white font-display mb-2">2. Choose Weight</label>
+            <div class="grid grid-cols-2 gap-2 text-xs">
+              <button type="button" onclick="selectCakeWeight(0.5, this)" class="weight-btn p-3 rounded-xl border border-brandPurple/30 bg-surface font-bold text-slate-300 text-center hover:border-brandPurple">
+                0.5 Kg (Small Party / 4-6 Persons)
+              </button>
+              <button type="button" onclick="selectCakeWeight(1.0, this)" class="weight-btn active p-3 rounded-xl border border-brandPurple bg-brandPurple/30 font-bold text-white text-center">
+                1.0 Kg (Family Celebration / 8-12 Persons)
+              </button>
+            </div>
+          </div>
+
+          <!-- Custom Inscription -->
+          <div>
+            <label for="customMessageInput" class="block text-xs font-bold uppercase tracking-wider text-white font-display mb-1.5">3. Name / Message Piped on Cake (Free)</label>
+            <input 
+              id="customMessageInput" 
+              type="text" 
+              value="Happy Birthday!" 
+              maxlength="30" 
+              class="w-full bg-midnight text-white text-xs px-3.5 py-2.5 rounded-xl border border-brandPurple/40 focus:outline-none focus:ring-2 focus:ring-brandPurple font-serif"
+              oninput="handlePipedMessage(this.value)"
+            >
+          </div>
+
+        </div>
+
+      </div>
+
+    </div>
+  </section>
+
+
+  <!-- Counter Information & Location -->
+  <section id="store-info" class="py-16 md:py-20 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <div class="grid grid-cols-1 lg:grid-cols-12 gap-8">
+      
+      <!-- Left Store Details -->
+      <div class="lg:col-span-6 space-y-6">
+        <div>
+          <span class="text-xs font-bold uppercase tracking-widest text-purple-400 font-display">Payyannur, Kannur</span>
+          <h2 class="font-display text-3xl font-extrabold text-white mt-1">Visit Our Takeaway Counter</h2>
+          <p class="text-xs sm:text-sm text-slate-300 mt-1 leading-relaxed">
+            Pick up fresh parcels of hot puffs, cutlets, breads, and cakes directly from our shop counter in Kunhimangalam.
+          </p>
+        </div>
+
+        <div class="space-y-4">
+          <!-- Timings -->
+          <div class="p-4 rounded-2xl bg-surface border border-brandPurple/30 flex items-start gap-3">
+            <div class="w-10 h-10 rounded-xl bg-brandPurple/20 text-purple-300 flex items-center justify-center shrink-0">
+              <i data-lucide="clock" class="w-5 h-5"></i>
+            </div>
+            <div>
+              <h3 class="text-xs font-bold text-white">Daily Bakery Timings</h3>
+              <p class="text-xs text-slate-300 mt-0.5"><strong>9:30 AM to 10:30 PM</strong> (Open 7 Days)</p>
+              <p class="text-[11px] text-neonViolet font-bold mt-0.5">Service: Strictly Takeaway Only</p>
+            </div>
+          </div>
+
+          <!-- Phone Direct -->
+          <div class="p-4 rounded-2xl bg-surface border border-brandPurple/30 flex items-start gap-3">
+            <div class="w-10 h-10 rounded-xl bg-brandPurple/20 text-purple-300 flex items-center justify-center shrink-0">
+              <i data-lucide="phone-call" class="w-5 h-5"></i>
+            </div>
+            <div class="flex-1">
+              <h3 class="text-xs font-bold text-white">Direct Phone Call</h3>
+              <a href="tel:9847085553" class="text-sm font-bold text-white hover:text-purple-300 transition-colors block mt-0.5">
+                9847085553
+              </a>
+              <p class="text-[11px] text-slate-400">Call for instant counter status or advance orders.</p>
+            </div>
+            <a href="tel:9847085553" class="px-3 py-1.5 rounded-lg bg-white/10 hover:bg-white text-white hover:text-midnight text-xs font-bold transition-colors">
+              Call Now
+            </a>
+          </div>
+
+          <!-- WhatsApp Direct -->
+          <div class="p-4 rounded-2xl bg-surface border border-emerald-500/30 flex items-start gap-3">
+            <div class="w-10 h-10 rounded-xl bg-emerald-950 text-emerald-400 flex items-center justify-center shrink-0">
+              <i data-lucide="message-circle" class="w-5 h-5"></i>
+            </div>
+            <div class="flex-1">
+              <h3 class="text-xs font-bold text-white">WhatsApp Helpline &amp; Orders</h3>
+              <a href="https://wa.me/918921806076" target="_blank" class="text-sm font-bold text-emerald-400 hover:underline block mt-0.5">
+                8921806076
+              </a>
+              <p class="text-[11px] text-slate-400">Quick takeaway list submission with automatic proof receipt.</p>
+            </div>
+            <a href="https://wa.me/918921806076" target="_blank" class="px-3 py-1.5 rounded-lg bg-emerald-600 hover:bg-emerald-500 text-white text-xs font-bold transition-colors">
+              Chat
+            </a>
+          </div>
+        </div>
+
+      </div>
+
+      <!-- Right Address & Location Box -->
+      <div class="lg:col-span-6 glass-card p-6 sm:p-8 rounded-3xl border border-brandPurple/40 flex flex-col justify-between">
+        <div class="space-y-4">
+          <div class="flex items-center gap-2">
+            <span class="text-xs font-bold uppercase tracking-wider text-purple-400 font-display">Location</span>
+            <span class="text-[10px] font-bold px-2 py-0.5 rounded bg-white/10 text-white">Kunhimangalam</span>
+          </div>
+
+          <h3 class="font-display text-2xl font-bold text-white">FRESH AND FRESH BAKERY</h3>
+          <p class="text-xs sm:text-sm text-slate-300 leading-relaxed">
+            Kunhimangalam, Near Payyannur, Kannur District, Kerala - 670309.
+          </p>
+
+          <div class="p-4 rounded-2xl bg-midnight border border-brandPurple/30 space-y-2 text-xs">
+            <div class="flex items-center gap-2 text-purple-300 font-bold">
+              <i data-lucide="map-pinned" class="w-4 h-4"></i>
+              <span>Landmark &amp; Pickup Point:</span>
+            </div>
+            <p class="text-slate-300 text-[11px] leading-relaxed">
+              Main Road, Kunhimangalam town center. Easy counter parking available for quick pickup of hot puffs and bakery parcels.
+            </p>
+          </div>
+
+          <div class="p-4 rounded-2xl bg-midnight/60 border border-emerald-500/30 text-xs text-slate-300 flex items-center justify-between">
+            <div class="flex items-center gap-2">
+              <i data-lucide="shield-check" class="w-4 h-4 text-emerald-400"></i>
+              <span>Official Merchant UPI ID:</span>
+            </div>
+            <code class="text-white font-mono font-bold bg-white/10 px-2 py-1 rounded">paytm.s1tulls@pty</code>
+          </div>
+        </div>
+
+        <div class="pt-6 border-t border-brandPurple/30 flex flex-col sm:flex-row gap-3">
+          <a 
+            href="https://www.google.com/maps/search/?api=1&query=Kunhimangalam+Payyannur+Kannur" 
+            target="_blank" 
+            class="flex-1 py-3 rounded-xl bg-white text-midnight hover:bg-slate-100 font-bold text-xs text-center flex items-center justify-center gap-2 transition-all shadow"
+          >
+            <i data-lucide="navigation" class="w-4 h-4 text-brandPurple"></i>
+            <span>Open in Google Maps</span>
+          </a>
+          <a 
+            href="tel:9847085553" 
+            class="py-3 px-5 rounded-xl bg-white/10 hover:bg-white/20 text-white font-bold text-xs text-center flex items-center justify-center gap-2 transition-all"
+          >
+            <i data-lucide="phone" class="w-4 h-4"></i>
+            <span>9847085553</span>
+          </a>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer class="bg-midnight border-t border-brandPurple/30 py-8 text-xs text-slate-400">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col sm:flex-row items-center justify-between gap-4">
+      <div class="flex items-center gap-3">
+        <div class="w-8 h-8 rounded-xl bg-gradient-to-br from-brandPurple to-neonViolet flex items-center justify-center text-white">
+          <i data-lucide="croissant" class="w-4 h-4"></i>
+        </div>
+        <div>
+          <span class="font-display font-bold text-white text-sm">FRESH AND FRESH BAKERY</span>
+          <span class="block text-[10px] text-purple-300">Kunhimangalam, Payyannur, Kannur • 9:30 AM to 10:30 PM (Takeaway Only)</span>
+        </div>
+      </div>
+
+      <div class="text-center sm:text-right">
+        <p>&copy; 2026 FRESH AND FRESH BAKERY. All rights reserved.</p>
+        <p class="text-[11px] text-slate-400 mt-0.5">UPI ID: paytm.s1tulls@pty | Ph: 9847085553 | WA: 8921806076</p>
+      </div>
+    </div>
+  </footer>
+
+
+  <!-- Cart Drawer Backdrop -->
+  <div id="cartBackdrop" onclick="toggleCart(false)" class="fixed inset-0 bg-black/80 backdrop-blur-sm z-50 opacity-0 pointer-events-none transition-opacity duration-300"></div>
+
+  <!-- Cart Drawer -->
+  <aside aria-label="Takeaway Parcel Drawer" id="cartDrawer" class="fixed top-0 right-0 bottom-0 w-full sm:w-[460px] bg-midnight shadow-2xl z-50 transform translate-x-full transition-transform duration-300 flex flex-col border-l border-brandPurple/40">
+    
+    <!-- Drawer Header -->
+    <div class="p-4 border-b border-brandPurple/30 flex items-center justify-between bg-surface">
+      <div class="flex items-center gap-2.5">
+        <div class="w-8 h-8 rounded-lg bg-brandPurple flex items-center justify-center text-white text-sm">
+          <i data-lucide="shopping-bag" class="w-4 h-4"></i>
+        </div>
+        <div>
+          <h3 class="font-display text-sm font-bold text-white">Your Takeaway Parcel</h3>
+          <p class="text-[10px] text-purple-300 uppercase font-bold">Kunhimangalam Counter Collection</p>
+        </div>
+      </div>
+      <button onclick="toggleCart(false)" class="p-2 rounded-full hover:bg-white/10 text-slate-400 transition-colors" aria-label="Close cart">
+        <i data-lucide="x" class="w-5 h-5"></i>
+      </button>
+    </div>
+
+    <!-- Takeaway notice banner inside cart -->
+    <div class="px-4 py-2 bg-gradient-to-r from-brandPurple/20 to-neonViolet/20 border-b border-brandPurple/30 text-[11px] text-purple-200 flex items-center gap-2">
+      <span class="w-2 h-2 rounded-full bg-neonViolet shrink-0 animate-pulse"></span>
+      <span><strong>Takeaway Only:</strong> Fresh counter packaging with digital proof receipt.</span>
+    </div>
+
+    <!-- Items List -->
+    <div id="cartItemsList" class="flex-1 overflow-y-auto p-4 space-y-3">
+      <!-- Items dynamically populated -->
+    </div>
+
+    <!-- Empty state -->
+    <div id="cartEmptyState" class="hidden flex-1 flex flex-col items-center justify-center p-8 text-center">
+      <div class="w-14 h-14 rounded-full bg-surface border border-brandPurple/30 flex items-center justify-center text-purple-300 mb-3">
+        <i data-lucide="shopping-bag" class="w-6 h-6"></i>
+      </div>
+      <h4 class="font-display text-sm font-bold text-white">Your parcel is empty</h4>
+      <p class="text-xs text-slate-400 mt-1 max-w-xs">Add hot egg puffs (₹15), tea snacks, fresh buns or celebration cakes!</p>
+      <button onclick="toggleCart(false)" class="mt-4 px-4 py-2 rounded-full bg-white text-midnight text-xs font-bold hover:bg-slate-100">
+        Browse Menu
+      </button>
+    </div>
+
+    <!-- Checkout Details Footer -->
+    <div id="cartFooter" class="p-4 border-t border-brandPurple/30 bg-surface/95 space-y-3">
+      
+      <!-- Pickup and Customer Info -->
+      <div class="grid grid-cols-1 sm:grid-cols-2 gap-2 text-xs">
+        <div>
+          <label class="block text-[10px] uppercase font-bold text-purple-300 font-display mb-1" for="custName">Customer Name</label>
+          <input id="custName" type="text" placeholder="e.g. Anand" class="w-full bg-midnight text-white text-xs p-2 rounded-xl border border-brandPurple/40 focus:outline-none focus:ring-1 focus:ring-brandPurple">
+        </div>
+        <div>
+          <label class="block text-[10px] uppercase font-bold text-purple-300 font-display mb-1" for="custPhone">Phone Number</label>
+          <input id="custPhone" type="tel" placeholder="e.g. 9847000000" class="w-full bg-midnight text-white text-xs p-2 rounded-xl border border-brandPurple/40 focus:outline-none focus:ring-1 focus:ring-brandPurple">
+        </div>
+        <div class="sm:col-span-2">
+          <label class="block text-[10px] uppercase font-bold text-purple-300 font-display mb-1" for="pickupSlot">Pickup Time Slot (9:30 AM - 10:30 PM)</label>
+          <select id="pickupSlot" class="w-full bg-midnight text-white text-xs p-2 rounded-xl border border-brandPurple/40 focus:outline-none focus:ring-1 focus:ring-brandPurple">
+            <option>Ready in 15 to 20 mins</option>
+            <option>Evening Chai Batch (4:00 PM - 5:30 PM)</option>
+            <option>Dinner Takeaway (7:30 PM - 9:30 PM)</option>
+            <option>Late Night Parcel (9:30 PM - 10:15 PM)</option>
+            <option>Advance Pre-order for Tomorrow</option>
+          </select>
+        </div>
+      </div>
+
+      <!-- Payment Choice Toggle -->
+      <div>
+        <label class="block text-[10px] uppercase font-bold text-purple-300 font-display mb-1.5">Select Payment Option</label>
+        <div class="grid grid-cols-2 gap-2">
+          <label class="flex items-center gap-2 p-2.5 rounded-xl border border-brandPurple/50 bg-midnight/80 cursor-pointer hover:border-purple-400 transition-colors">
+            <input type="radio" name="paymentOption" value="UPI" checked class="accent-purple-500 w-3.5 h-3.5">
+            <div>
+              <span class="block text-xs font-bold text-white">Pay Online (UPI)</span>
+              <span class="block text-[10px] text-purple-300">GPay / PhonePe / QR</span>
+            </div>
+          </label>
+          <label class="flex items-center gap-2 p-2.5 rounded-xl border border-brandPurple/50 bg-midnight/80 cursor-pointer hover:border-purple-400 transition-colors">
+            <input type="radio" name="paymentOption" value="CASH" class="accent-purple-500 w-3.5 h-3.5">
+            <div>
+              <span class="block text-xs font-bold text-white">Cash on Takeaway</span>
+              <span class="block text-[10px] text-slate-400">Pay at Counter</span>
+            </div>
+          </label>
+        </div>
+      </div>
+
+      <!-- Totals -->
+      <div class="pt-2 border-t border-brandPurple/30 space-y-1 text-xs text-slate-300">
+        <div class="flex justify-between">
+          <span>Items Total</span>
+          <span id="cartSubtotal" class="text-white font-bold">₹0</span>
+        </div>
+        <div class="flex justify-between text-emerald-400">
+          <span>Takeaway Packaging &amp; Box</span>
+          <span>FREE</span>
+        </div>
+        <div class="flex justify-between text-sm font-bold text-white pt-1.5 border-t border-brandPurple/40">
+          <span>Total Amount Payable</span>
+          <span id="cartTotal" class="font-display text-base text-purple-300">₹0</span>
+        </div>
+      </div>
+
+      <!-- Proceed Action Button -->
+      <button 
+        onclick="initiateOrderProcess()" 
+        class="w-full py-3.5 rounded-full bg-gradient-to-r from-brandPurple to-neonViolet hover:from-purple-600 hover:to-fuchsia-600 text-white font-bold text-xs shadow-lg shadow-purple-900/40 flex items-center justify-center gap-2 active:scale-95 transition-all"
+      >
+        <i data-lucide="check-circle" class="w-4 h-4"></i>
+        <span id="cartSubmitBtnText">Proceed to Pay &amp; Generate Bill</span>
+      </button>
+
+      <!-- Counter Phone Call link -->
+      <a 
+        href="tel:9847085553" 
+        class="w-full py-2 rounded-xl bg-white/5 hover:bg-white/10 text-white text-[11px] font-bold text-center border border-white/10 flex items-center justify-center gap-1.5"
+      >
+        <i data-lucide="phone" class="w-3.5 h-3.5 text-purple-300"></i>
+        <span>Need Help? Call Counter: 9847085553</span>
+      </a>
+    </div>
+
+  </aside>
+
+
+  <!-- Online UPI Payment Modal -->
+  <div id="upiModal" class="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/85 backdrop-blur-md opacity-0 pointer-events-none transition-opacity duration-300">
+    <div class="glass-card max-w-md w-full rounded-3xl p-6 border border-brandPurple/50 relative text-center space-y-4 shadow-2xl">
+      
+      <button onclick="closeUPIModal()" class="absolute top-4 right-4 p-1.5 rounded-full bg-white/10 hover:bg-white/20 text-slate-300" aria-label="Close UPI payment">
+        <i data-lucide="x" class="w-4 h-4"></i>
+      </button>
+
+      <div class="w-12 h-12 rounded-2xl bg-emerald-500/20 border border-emerald-500/40 text-emerald-400 flex items-center justify-center mx-auto">
+        <i data-lucide="qr-code" class="w-6 h-6"></i>
+      </div>
+
+      <div>
+        <span class="text-[11px] font-bold uppercase tracking-wider text-purple-300 font-display">Scan &amp; Pay via Any UPI App</span>
+        <h3 class="font-display text-xl font-extrabold text-white mt-0.5">FRESH AND FRESH BAKERY</h3>
+        <p class="text-xs text-slate-300 mt-0.5">Amount to Pay: <strong class="text-emerald-400 text-lg font-bold font-display" id="upiModalAmount">₹0</strong></p>
+      </div>
+
+      <!-- Generated QR Code Image with live amount -->
+      <div class="bg-white p-3 rounded-2xl inline-block shadow-lg mx-auto border-2 border-brandPurple">
+        <img id="upiQrImage" src="" alt="Scan UPI QR Code for Fresh and Fresh Bakery" class="w-48 h-48 mx-auto object-contain">
+        <p class="text-[10px] text-slate-800 font-mono font-bold mt-1">UPI ID: paytm.s1tulls@pty</p>
+      </div>
+
+      <!-- Mobile Click to Pay Intent Link -->
+      <div>
+        <a 
+          id="upiIntentLink" 
+          href="#" 
+          class="w-full py-3 rounded-xl bg-gradient-to-r from-emerald-600 to-teal-600 hover:from-emerald-500 hover:to-teal-500 text-white font-bold text-xs flex items-center justify-center gap-2 shadow-md"
+        >
+          <i data-lucide="smartphone" class="w-4 h-4"></i>
+          <span>Click to Pay with GPay / PhonePe / Paytm</span>
+        </a>
+        <p class="text-[10px] text-slate-400 mt-1">Works directly on mobile phones with installed UPI apps.</p>
+      </div>
+
+      <!-- UTR Reference input -->
+      <div class="pt-2 border-t border-brandPurple/30 text-left space-y-2">
+        <label for="upiRefInput" class="block text-[11px] font-bold text-purple-300">UPI Transaction ID / UTR (Optional proof):</label>
+        <div class="flex gap-2">
+          <input 
+            id="upiRefInput" 
+            type="text" 
+            placeholder="e.g. 429381029482" 
+            class="flex-1 bg-midnight text-white text-xs px-3 py-2 rounded-xl border border-brandPurple/40 focus:outline-none focus:ring-1 focus:ring-brandPurple font-mono"
+          >
+          <button 
+            onclick="confirmUPIPayment()" 
+            class="px-4 py-2 rounded-xl bg-white text-midnight hover:bg-slate-100 font-bold text-xs whitespace-nowrap active:scale-95 transition-all shadow"
+          >
+            I Have Paid
+          </button>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+
+  <!-- DIGITAL BILL / PROOF OF PAYMENT MODAL -->
+  <div id="billModal" class="fixed inset-0 z-50 flex items-center justify-center p-3 sm:p-4 bg-black/90 backdrop-blur-md opacity-0 pointer-events-none transition-opacity duration-300 overflow-y-auto">
+    <div class="max-w-md w-full bg-midnight rounded-3xl border border-brandPurple/50 shadow-2xl relative my-auto p-4 sm:p-6 space-y-4">
+      
+      <button onclick="closeBillModal()" class="no-print absolute top-4 right-4 p-1.5 rounded-full bg-white/10 hover:bg-white/20 text-slate-300" aria-label="Close bill modal">
+        <i data-lucide="x" class="w-4 h-4"></i>
+      </button>
+
+      <!-- PRINTABLE RECEIPT CONTAINER -->
+      <div id="printableReceiptArea" class="bg-surface rounded-2xl p-5 border border-brandPurple/40 font-mono text-slate-200 space-y-3">
+        
+        <!-- Bakery Header -->
+        <div class="text-center pb-3 border-b border-dashed border-brandPurple/40">
+          <h2 class="font-display font-extrabold text-base sm:text-lg text-white tracking-wide">FRESH AND FRESH BAKERY</h2>
+          <p class="text-[11px] text-purple-300">Kunhimangalam, Payyannur, Kannur, Kerala</p>
+          <p class="text-[10px] text-slate-400">Bakery Timings: 9:30 AM - 10:30 PM | Strictly Takeaway</p>
+          <p class="text-[10px] text-slate-400">Phone: 9847085553 | WhatsApp: 8921806076</p>
+        </div>
+
+        <!-- Token & Time Bar -->
+        <div class="flex items-center justify-between text-xs py-1 border-b border-dashed border-brandPurple/30">
+          <div>
+            <span class="text-[10px] text-slate-400 uppercase block">TOKEN NO:</span>
+            <span class="font-bold text-white text-sm" id="billToken">#FF-8492</span>
+          </div>
+          <div class="text-right">
+            <span class="text-[10px] text-slate-400 uppercase block">DATE &amp; TIME:</span>
+            <span class="text-xs text-white" id="billDateTime">--</span>
+          </div>
+        </div>
+
+        <!-- Customer & Service Info -->
+        <div class="text-[11px] space-y-0.5 py-1 border-b border-dashed border-brandPurple/30">
+          <div class="flex justify-between">
+            <span class="text-slate-400">Customer:</span>
+            <span class="font-bold text-white" id="billCustName">Counter Guest</span>
+          </div>
+          <div class="flex justify-between">
+            <span class="text-slate-400">Contact:</span>
+            <span class="font-bold text-white" id="billCustPhone">9847085553</span>
+          </div>
+          <div class="flex justify-between">
+            <span class="text-slate-400">Collection Slot:</span>
+            <span class="font-bold text-purple-300" id="billPickupSlot">Ready in 15 mins</span>
+          </div>
+        </div>
+
+        <!-- Itemized List Table -->
+        <div class="py-2">
+          <div class="flex justify-between text-[11px] font-bold text-purple-300 border-b border-brandPurple/30 pb-1 mb-1.5">
+            <span>ITEM DESCRIPTION</span>
+            <span>QTY x RATE</span>
+            <span>AMOUNT</span>
+          </div>
+          <div id="billItemsTable" class="space-y-1.5 text-xs text-slate-200">
+            <!-- Dynamically populated bill items -->
+          </div>
+        </div>
+
+        <!-- Bill Totals -->
+        <div class="pt-2 border-t border-dashed border-brandPurple/40 space-y-1 text-xs">
+          <div class="flex justify-between text-slate-300">
+            <span>Subtotal</span>
+            <span id="billSubtotal">₹0</span>
+          </div>
+          <div class="flex justify-between text-emerald-400 text-[11px]">
+            <span>Packaging &amp; Parcel Bag</span>
+            <span>₹0 (FREE)</span>
+          </div>
+          <div class="flex justify-between text-sm font-bold text-white pt-1 border-t border-brandPurple/50">
+            <span>GRAND TOTAL</span>
+            <span class="text-base text-purple-300 font-extrabold" id="billGrandTotal">₹0</span>
+          </div>
+        </div>
+
+        <!-- Payment Status Badge (Verified Proof) -->
+        <div id="billPaymentStatusBox" class="mt-3 p-2.5 rounded-xl text-center border text-xs font-bold space-y-0.5">
+          <!-- Injected via JavaScript based on UPI vs Cash -->
+        </div>
+
+        <!-- Footer Notice -->
+        <div class="text-center text-[10px] text-slate-400 pt-2 border-t border-dashed border-brandPurple/30">
+          <p>*** THANK YOU FOR VISITING FRESH AND FRESH BAKERY ***</p>
+          <p class="mt-0.5">Please show this digital proof at the Kunhimangalam counter to collect your fresh parcel.</p>
+        </div>
+
+      </div>
+
+      <!-- Action Buttons for the Bill (No print) -->
+      <div class="no-print space-y-2 pt-1">
+        <div class="flex gap-2">
+          <button 
+            onclick="window.print()" 
+            class="flex-1 py-2.5 rounded-xl bg-white text-midnight hover:bg-slate-100 font-bold text-xs flex items-center justify-center gap-1.5 shadow active:scale-95 transition-all"
+          >
+            <i data-lucide="printer" class="w-4 h-4 text-brandPurple"></i>
+            <span>Print / Save Bill (PDF)</span>
+          </button>
+          
+          <button 
+            onclick="shareBillOnWhatsApp()" 
+            class="flex-1 py-2.5 rounded-xl bg-gradient-to-r from-emerald-600 to-teal-600 hover:from-emerald-500 hover:to-teal-500 text-white font-bold text-xs flex items-center justify-center gap-1.5 shadow active:scale-95 transition-all"
+          >
+            <i data-lucide="message-circle" class="w-4 h-4"></i>
+            <span>Send to Bakery WhatsApp</span>
+          </button>
+        </div>
+
+        <button 
+          onclick="closeBillModalAndReset()" 
+          class="w-full py-2 rounded-xl bg-white/10 hover:bg-white/20 text-slate-300 text-xs font-bold text-center transition-colors"
+        >
+          Done / Place Another Order
+        </button>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- Mobile Bottom Sticky Bar -->
+  <aside aria-label="Mobile Bottom Bar" class="lg:hidden fixed bottom-0 left-0 right-0 z-40 bg-midnight/95 border-t border-brandPurple/40 p-2.5 backdrop-blur-md flex items-center gap-2">
+    <a 
+      href="tel:9847085553" 
+      class="flex-1 py-2.5 bg-white text-midnight rounded-xl text-xs font-bold text-center flex items-center justify-center gap-1.5"
+    >
+      <i data-lucide="phone" class="w-3.5 h-3.5 text-brandPurple"></i>
+      <span>Call: 9847085553</span>
+    </a>
+    <button 
+      onclick="toggleCart(true)" 
+      class="flex-1 py-2.5 bg-brandPurple text-white rounded-xl text-xs font-bold flex items-center justify-center gap-1.5"
+    >
+      <i data-lucide="shopping-bag" class="w-4 h-4"></i>
+      <span>Takeaway Parcel (<span id="mobileCartCount">0</span>)</span>
+    </button>
+  </aside>
+
+
+  <script>
+    /* Indian Bakery Catalogue with requested Puff rates at ₹15 */
+    const MENU_ITEMS = [
+      // 1. Puffs
+      { id: 101, title: "Egg Puff", category: "puffs", price: 15, tag: "Top Seller", desc: "Crispy layered puff pastry with spiced boiled egg masala.", img: "https://images.unsplash.com/photo-1608198093002-ad4e005484ec?auto=format&fit=crop&w=600&q=80" },
+      { id: 102, title: "Veg Puff", category: "puffs", price: 15, tag: "Fresh Daily", desc: "Golden crust loaded with spiced potato, carrot & green peas masala.", img: "https://images.unsplash.com/photo-1555507036-ab1f4038808a?auto=format&fit=crop&w=600&q=80" },
+      { id: 103, title: "Chicken Puff", category: "puffs", price: 25, tag: "Malabar Special", desc: "Flaky golden pastry filled with Kannur spiced shredded chicken masala.", img: "https://images.unsplash.com/photo-1626082927389-6cd097cdc6ec?auto=format&fit=crop&w=600&q=80" },
+      { id: 104, title: "Meat / Beef Puff", category: "puffs", price: 25, tag: "Crispy", desc: "Traditional Kerala style savory minced meat puff pastry.", img: "https://images.unsplash.com/photo-1565557623262-b51c2513a641?auto=format&fit=crop&w=600&q=80" },
+      { id: 105, title: "Paneer Puff", category: "puffs", price: 20, tag: "Vegetarian", desc: "Flaky puff packed with soft spiced cottage cheese cubes.", img: "https://images.unsplash.com/photo-1589301760014-d929f3979dbc?auto=format&fit=crop&w=600&q=80" },
+
+      // 2. Kerala Tea Snacks (Chaya Kadi)
+      { id: 201, title: "Pazham Pori (Banana Fritter)", category: "teasnacks", price: 12, tag: "Hot at 4 PM", desc: "Sweet ripe Kerala Nendran bananas batter-fried to golden perfection.", img: "https://images.unsplash.com/photo-1528735602780-2552fd46c7af?auto=format&fit=crop&w=600&q=80" },
+      { id: 202, title: "Sukhiyan", category: "teasnacks", price: 10, tag: "Traditional", desc: "Green gram cooked with fresh jaggery and coconut in crispy golden batter.", img: "https://images.unsplash.com/photo-1546069901-ba9599a7e63c?auto=format&fit=crop&w=600&q=80" },
+      { id: 203, title: "Crispy Veg Samosa", category: "teasnacks", price: 12, tag: "Tea-Time", desc: "Crunchy triangle pastry packed with spiced cumin potatoes.", img: "https://images.unsplash.com/photo-1601050690597-df0568f70950?auto=format&fit=crop&w=600&q=80" },
+      { id: 204, title: "Kerala Chicken Samosa", category: "teasnacks", price: 18, tag: "Spicy", desc: "Crunchy samosa stuffed with spicy chicken keema and caramelized onion.", img: "https://images.unsplash.com/photo-1589301760014-d929f3979dbc?auto=format&fit=crop&w=600&q=80" },
+      { id: 205, title: "Golden Veg Cutlet", category: "teasnacks", price: 15, tag: "Crispy", desc: "Crumb-coated spiced vegetable patty deep-fried fresh for evening chai.", img: "https://images.unsplash.com/photo-1541544741938-0af808871cc0?auto=format&fit=crop&w=600&q=80" },
+      { id: 206, title: "Kerala Chicken Cutlet", category: "teasnacks", price: 22, tag: "Special", desc: "Delicious breadcrumb-coated chicken and mashed potato cutlet.", img: "https://images.unsplash.com/photo-1565557623262-b51c2513a641?auto=format&fit=crop&w=600&q=80" },
+      { id: 207, title: "Malabar Unnakkayi", category: "teasnacks", price: 20, tag: "Kannur Fav", desc: "Spindle-shaped steamed banana delicacy stuffed with sweetened coconut.", img: "https://images.unsplash.com/photo-1509440159596-0249088772ff?auto=format&fit=crop&w=600&q=80" },
+      { id: 208, title: "Neyyappam (Sweet Ghee Appam)", category: "teasnacks", price: 12, tag: "Classic", desc: "Traditional Kerala sweet rice cake fried in ghee with jaggery & coconut bits.", img: "https://images.unsplash.com/photo-1589301760014-d929f3979dbc?auto=format&fit=crop&w=600&q=80" },
+
+      // 3. Bakery Fresh Breads & Buns
+      { id: 301, title: "Sweet Cream Bun", category: "breads", price: 15, tag: "Bakery Classic", desc: "Soft elongated bun filled with sweet vanilla bakery cream.", img: "https://images.unsplash.com/photo-1509440159596-0249088772ff?auto=format&fit=crop&w=600&q=80" },
+      { id: 302, title: "Jam Bun / Coconut Bun", category: "breads", price: 18, tag: "Sweet", desc: "Sweet bun topped with mixed fruit jam and shredded coconut flakes.", img: "https://images.unsplash.com/photo-1509440159596-0249088772ff?auto=format&fit=crop&w=600&q=80" },
+      { id: 303, title: "Rich Butter Bun", category: "breads", price: 20, tag: "Soft", desc: "Fluffy sweetened bun sliced and slathered with pure butter and sugar.", img: "https://images.unsplash.com/photo-1586444248902-2f64eddc13df?auto=format&fit=crop&w=600&q=80" },
+      { id: 304, title: "Fresh Milk Bread Loaf (White)", category: "breads", price: 35, tag: "Daily 9:30 AM", desc: "Soft white sliced bread made with fresh milk. Ideal for breakfast toast.", img: "https://images.unsplash.com/photo-1549931319-a545dcf3bc73?auto=format&fit=crop&w=600&q=80" },
+      { id: 305, title: "Wheat Bread Loaf (Atta)", category: "breads", price: 40, tag: "Healthy", desc: "Stone-ground whole wheat atta bread loaf baked fresh daily.", img: "https://images.unsplash.com/photo-1589367920969-ab8e050bbb04?auto=format&fit=crop&w=600&q=80" },
+      { id: 306, title: "Tea Rusk / Milk Toast (Packet)", category: "breads", price: 45, tag: "Crunchy", desc: "Crispy double-baked cardamom tea rusks. Best dunked in hot chai.", img: "https://images.unsplash.com/photo-1589367920969-ab8e050bbb04?auto=format&fit=crop&w=600&q=80" },
+
+      // 4. Authentic Indian Bakery Cakes & Pastries
+      { id: 401, title: "Kerala Honey Cake Slice", category: "cakes", price: 20, tag: "Malabar Icon", desc: "Moist sponge cake drenched in sweet honey syrup, strawberry jam & coconut.", img: "https://images.unsplash.com/photo-1519869325930-281384150729?auto=format&fit=crop&w=600&q=80" },
+      { id: 402, title: "Rich Spiced Plum Cake Slice", category: "cakes", price: 25, tag: "Dry Fruit", desc: "Traditional spiced Kerala plum cake slice loaded with soaked raisins & nuts.", img: "https://images.unsplash.com/photo-1541781774459-bb2af2f05b55?auto=format&fit=crop&w=600&q=80" },
+      { id: 403, title: "Pineapple Pastry Slice", category: "cakes", price: 35, tag: "Fresh Cream", desc: "Layered sponge with whipped cream and pineapple fruit compote.", img: "https://images.unsplash.com/photo-1535141192574-5d4897c13136?auto=format&fit=crop&w=600&q=80" },
+      { id: 404, title: "Black Forest Pastry Slice", category: "cakes", price: 45, tag: "Favorite", desc: "Chocolate sponge layered with fresh cream, cherries, and chocolate shavings.", img: "https://images.unsplash.com/photo-1606313564200-e75d5e30476c?auto=format&fit=crop&w=600&q=80" },
+      { id: 405, title: "Butterscotch Pastry Slice", category: "cakes", price: 40, tag: "Crunchy", desc: "Vanilla sponge with butterscotch cream and caramelized praline crunch.", img: "https://images.unsplash.com/photo-1578985545062-69928b1d9587?auto=format&fit=crop&w=600&q=80" },
+
+      // 5. Biscuits & Sweets
+      { id: 501, title: "Malabar Ghee Biscuit (Nankhatai)", category: "biscuits", price: 10, tag: "Melt In Mouth", desc: "Rich fragrant bakery cookie made with pure ghee and cardamom.", img: "https://images.unsplash.com/photo-1499636136210-6f4ee915583e?auto=format&fit=crop&w=600&q=80" },
+      { id: 502, title: "Cashew Macaroons (Packet)", category: "biscuits", price: 60, tag: "Crispy", desc: "Golden sweet bakery macaroons loaded with crunchy cashew bits.", img: "https://images.unsplash.com/photo-1569864358642-9d1684040f43?auto=format&fit=crop&w=600&q=80" },
+      { id: 503, title: "Bakery Coconut Cookies", category: "biscuits", price: 15, tag: "Tea-Time", desc: "Freshly baked crunchy biscuits with toasted grated coconut aroma.", img: "https://images.unsplash.com/photo-1499636136210-6f4ee915583e?auto=format&fit=crop&w=600&q=80" },
+      { id: 504, title: "Bakery Motichoor Laddu (Piece)", category: "biscuits", price: 15, tag: "Sweet", desc: "Soft juicy ghee laddu made from tiny gram flour pearls.", img: "https://images.unsplash.com/photo-1546069901-ba9599a7e63c?auto=format&fit=crop&w=600&q=80" },
+      { id: 505, title: "Kannur Special Banana Chips (Packet)", category: "biscuits", price: 70, tag: "Coconut Oil", desc: "Crispy salted Nendran banana chips fried in 100% pure coconut oil.", img: "https://images.unsplash.com/photo-1528735602780-2552fd46c7af?auto=format&fit=crop&w=600&q=80" }
+    ];
+
+    const UPI_ID = "paytm.s1tulls@pty";
+    const BAKERY_NAME = "Fresh And Fresh Bakery";
+    const WHATSAPP_NUMBER = "918921806076";
+    const PHONE_NUMBER = "9847085553";
+
+    let cart = [];
+    let activeCategory = 'all';
+    let searchQuery = '';
+    let lastOrderDetails = null;
+
+    // Custom cake builder state
+    let cakeState = {
+      flavor: 'Black Forest',
+      color: '#3b1e15',
+      rate05: 350,
+      rate10: 650,
+      weight: 1.0,
+      message: 'Happy Birthday!'
+    };
+
+    document.addEventListener('DOMContentLoaded', () => {
+      renderMenu();
+      updateStoreTimingStatus();
+      setInterval(updateStoreTimingStatus, 30000); // refresh every 30s
+      lucide.createIcons();
+    });
+
+    /* Live 9:30 AM to 10:30 PM Status Logic */
+    function updateStoreTimingStatus() {
+      const now = new Date();
+      const utc = now.getTime() + (now.getTimezoneOffset() * 60000);
+      const istDate = new Date(utc + (3600000 * 5.5));
+
+      const hours = istDate.getHours();
+      const minutes = istDate.getMinutes();
+      const totalMinutes = (hours * 60) + minutes;
+
+      const openMinutes = 9 * 60 + 30; // 9:30 AM = 570 mins
+      const closeMinutes = 22 * 60 + 30; // 10:30 PM = 1350 mins
+
+      const isOpen = (totalMinutes >= openMinutes && totalMinutes < closeMinutes);
+
+      const statusPill = document.getElementById('liveStatusPill');
+      const openBadge = document.getElementById('liveOpenBadge');
+      const clockBadge = document.getElementById('liveClockBadge');
+
+      const timeFormatted = istDate.toLocaleTimeString('en-IN', { hour: '2-digit', minute: '2-digit', hour12: true });
+      if (clockBadge) clockBadge.innerText = `${timeFormatted} (IST)`;
+
+      if (isOpen) {
+        if (statusPill) {
+          statusPill.className = "inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-[10px] font-bold bg-emerald-500/20 text-emerald-400 border border-emerald-500/30";
+          statusPill.innerHTML = `<span class="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse"></span> Open Now`;
+        }
+        if (openBadge) {
+          openBadge.className = "px-3.5 py-1.5 rounded-full text-xs font-bold border border-emerald-500/40 bg-emerald-950/60 text-emerald-400 flex items-center gap-1.5";
+          openBadge.innerHTML = `<span class="w-2 h-2 rounded-full bg-emerald-400 animate-ping"></span> Counter Open (Closes 10:30 PM)`;
+        }
+      } else {
+        if (statusPill) {
+          statusPill.className = "inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-[10px] font-bold bg-rose-500/20 text-rose-400 border border-rose-500/30";
+          statusPill.innerHTML = `<span class="w-1.5 h-1.5 rounded-full bg-rose-400"></span> Closed Now`;
+        }
+        if (openBadge) {
+          openBadge.className = "px-3.5 py-1.5 rounded-full text-xs font-bold border border-rose-500/40 bg-rose-950/60 text-rose-400 flex items-center gap-1.5";
+          openBadge.innerHTML = `<span class="w-2 h-2 rounded-full bg-rose-400"></span> Counter Closed (Opens 9:30 AM)`;
+        }
+      }
+    }
+
+    /* Menu Renderer */
+    function renderMenu() {
+      const container = document.getElementById('menuGrid');
+      const noResults = document.getElementById('noResults');
+
+      const filtered = MENU_ITEMS.filter(item => {
+        const catMatch = activeCategory === 'all' || item.category === activeCategory;
+        const qMatch = item.title.toLowerCase().includes(searchQuery.toLowerCase()) || 
+                       item.desc.toLowerCase().includes(searchQuery.toLowerCase());
+        return catMatch && qMatch;
+      });
+
+      if (filtered.length === 0) {
+        container.innerHTML = '';
+        noResults.classList.remove('hidden');
+        return;
+      }
+
+      noResults.classList.add('hidden');
+      container.innerHTML = filtered.map(item => {
+        const cartItem = cart.find(c => c.id === item.id);
+        const qty = cartItem ? cartItem.qty : 0;
+
+        return `
+          <div class="glass-card rounded-2xl overflow-hidden flex flex-col justify-between transition-all group">
+            <div>
+              <div class="relative h-40 w-full overflow-hidden bg-midnight">
+                <img 
+                  src="${item.img}" 
+                  alt="${item.title}" 
+                  class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" 
+                  loading="lazy"
+                >
+                <div class="absolute inset-0 bg-gradient-to-t from-midnight via-midnight/20 to-transparent"></div>
+                ${item.tag ? `
+                  <span class="absolute top-2.5 left-2.5 bg-midnight/90 border border-brandPurple text-white text-[10px] font-bold px-2 py-0.5 rounded-full backdrop-blur-sm">
+                    ${item.tag}
+                  </span>
+                ` : ''}
+                <span class="absolute bottom-2 right-2 bg-black/70 backdrop-blur-sm text-[10px] text-purple-300 font-bold px-2 py-0.5 rounded">
+                  Takeaway
+                </span>
+              </div>
+
+              <div class="p-4">
+                <div class="flex items-start justify-between gap-1 mb-1">
+                  <h3 class="font-display font-bold text-sm text-white line-clamp-1">${item.title}</h3>
+                  <span class="font-display font-extrabold text-purple-300 text-sm whitespace-nowrap">₹${item.price}</span>
+                </div>
+                <p class="text-xs text-slate-300 line-clamp-2 leading-relaxed">${item.desc}</p>
+              </div>
+            </div>
+
+            <div class="p-4 pt-0">
+              ${qty === 0 ? `
+                <button 
+                  onclick="quickAdd(${item.id})" 
+                  class="w-full py-2.5 rounded-full bg-white/10 hover:bg-white text-white hover:text-midnight font-bold text-xs border border-brandPurple/40 transition-all flex items-center justify-center gap-1.5 active:scale-95"
+                >
+                  <i data-lucide="plus" class="w-3.5 h-3.5"></i>
+                  <span>Add to Parcel</span>
+                </button>
+              ` : `
+                <div class="flex items-center justify-between bg-surface rounded-full p-1 border border-brandPurple/50">
+                  <button onclick="updateQty(${item.id}, -1)" class="w-6 h-6 rounded-full bg-white/10 hover:bg-white/20 text-white font-bold text-xs flex items-center justify-center">
+                    -
+                  </button>
+                  <span class="text-xs font-bold text-white">${qty} in parcel</span>
+                  <button onclick="updateQty(${item.id}, 1)" class="w-6 h-6 rounded-full bg-brandPurple hover:bg-purple-600 text-white font-bold text-xs flex items-center justify-center shadow">
+                    +
+                  </button>
+                </div>
+              `}
+            </div>
+          </div>
+        `;
+      }).join('');
+
+      lucide.createIcons();
+    }
+
+    function setCategory(cat) {
+      activeCategory = cat;
+      document.querySelectorAll('.cat-btn').forEach(btn => {
+        if (btn.dataset.category === cat) {
+          btn.className = 'cat-btn active whitespace-nowrap px-4 py-2 rounded-full text-xs font-bold bg-white text-midnight transition-all shadow';
+        } else {
+          btn.className = 'cat-btn whitespace-nowrap px-4 py-2 rounded-full text-xs font-bold bg-surface text-slate-300 hover:text-white border border-brandPurple/30 transition-all';
+        }
+      });
+      renderMenu();
+    }
+
+    function handleSearch(val) {
+      searchQuery = val.trim();
+      renderMenu();
+    }
+
+    function resetFilters() {
+      activeCategory = 'all';
+      searchQuery = '';
+      const input = document.getElementById('menuSearch');
+      if (input) input.value = '';
+      setCategory('all');
+    }
+
+    /* Celebration Cake Selector */
+    function selectCakeFlavor(name, colorHex, r05, r10, btn) {
+      cakeState.flavor = name;
+      cakeState.color = colorHex;
+      cakeState.rate05 = r05;
+      cakeState.rate10 = r10;
+
+      document.querySelectorAll('.flavor-btn').forEach(b => {
+        b.className = 'flavor-btn p-3 rounded-xl border border-brandPurple/30 bg-surface font-bold text-slate-300 text-left hover:border-brandPurple';
+      });
+      btn.className = 'flavor-btn active p-3 rounded-xl border border-brandPurple bg-brandPurple/30 font-bold text-white text-left';
+
+      updateCakePreview();
+    }
+
+    function selectCakeWeight(wt, btn) {
+      cakeState.weight = wt;
+      document.querySelectorAll('.weight-btn').forEach(b => {
+        b.className = 'weight-btn p-3 rounded-xl border border-brandPurple/30 bg-surface font-bold text-slate-300 text-center hover:border-brandPurple';
+      });
+      btn.className = 'weight-btn active p-3 rounded-xl border border-brandPurple bg-brandPurple/30 font-bold text-white text-center';
+
+      updateCakePreview();
+    }
+
+    function handlePipedMessage(val) {
+      cakeState.message = val.trim();
+      document.getElementById('pipedMessagePreview').innerText = cakeState.message || 'Happy Birthday!';
+    }
+
+    function updateCakePreview() {
+      const price = cakeState.weight === 0.5 ? cakeState.rate05 : cakeState.rate10;
+      document.getElementById('cakePriceTag').innerText = `₹${price}`;
+      document.getElementById('cakeWeightTag').innerText = `${cakeState.weight} Kg Special`;
+      document.getElementById('cakeFlavorName').innerText = cakeState.flavor;
+
+      const tier = document.getElementById('cakeColorTier');
+      tier.style.backgroundColor = cakeState.color;
+    }
+
+    function addCustomCakeToCart() {
+      const price = cakeState.weight === 0.5 ? cakeState.rate05 : cakeState.rate10;
+      const cakeItem = {
+        id: `cake-${Date.now()}`,
+        title: `${cakeState.weight} Kg ${cakeState.flavor} Celebration Cake`,
+        price: price,
+        qty: 1,
+        img: "https://images.unsplash.com/photo-1578985545062-69928b1d9587?auto=format&fit=crop&w=600&q=80",
+        details: `Inscription: "${cakeState.message || 'Happy Birthday!'}" • Counter Pack`
+      };
+
+      cart.push(cakeItem);
+      renderCart();
+      toggleCart(true);
+
+      confetti({
+        particleCount: 45,
+        spread: 55,
+        origin: { y: 0.7 }
+      });
+    }
+
+    /* Cart Manipulation */
+    function quickAdd(id) {
+      const item = MENU_ITEMS.find(m => m.id === id);
+      if (!item) return;
+
+      const found = cart.find(c => c.id === id);
+      if (found) {
+        found.qty += 1;
+      } else {
+        cart.push({
+          id: item.id,
+          title: item.title,
+          price: item.price,
+          qty: 1,
+          img: item.img
+        });
+      }
+
+      renderCart();
+      renderMenu();
+    }
+
+    function updateQty(id, delta) {
+      const idx = cart.findIndex(c => c.id === id);
+      if (idx > -1) {
+        cart[idx].qty += delta;
+        if (cart[idx].qty <= 0) {
+          cart.splice(idx, 1);
+        }
+      }
+      renderCart();
+      renderMenu();
+    }
+
+    function removeCartItem(id) {
+      cart = cart.filter(c => c.id !== id);
+      renderCart();
+      renderMenu();
+    }
+
+    function renderCart() {
+      const totalCount = cart.reduce((sum, item) => sum + item.qty, 0);
+      const totalAmount = cart.reduce((sum, item) => sum + (item.price * item.qty), 0);
+
+      document.getElementById('navCartBadge').innerText = totalCount;
+      document.getElementById('navCartTotal').innerText = `₹${totalAmount}`;
+      const mobileCount = document.getElementById('mobileCartCount');
+      if (mobileCount) mobileCount.innerText = totalCount;
+
+      const list = document.getElementById('cartItemsList');
+      const empty = document.getElementById('cartEmptyState');
+      const footer = document.getElementById('cartFooter');
+
+      if (cart.length === 0) {
+        list.classList.add('hidden');
+        footer.classList.add('hidden');
+        empty.classList.remove('hidden');
+      } else {
+        list.classList.remove('hidden');
+        footer.classList.remove('hidden');
+        empty.classList.add('hidden');
+
+        list.innerHTML = cart.map(item => `
+          <div class="flex items-start gap-3 bg-surface p-3 rounded-2xl border border-brandPurple/30">
+            <img src="${item.img}" alt="${item.title}" class="w-12 h-12 rounded-xl object-cover shrink-0 border border-brandPurple/40">
+            <div class="flex-1 min-w-0">
+              <div class="flex items-start justify-between gap-1">
+                <h4 class="font-display font-bold text-xs text-white truncate">${item.title}</h4>
+                <button onclick="removeCartItem('${item.id}')" class="text-slate-400 hover:text-rose-400 text-xs" aria-label="Remove item">
+                  <i data-lucide="trash-2" class="w-3.5 h-3.5"></i>
+                </button>
+              </div>
+              ${item.details ? `<p class="text-[10px] text-purple-300 line-clamp-1 mt-0.5">${item.details}</p>` : ''}
+              <div class="flex items-center justify-between mt-2">
+                <span class="text-xs font-bold text-white">₹${item.price * item.qty}</span>
+                <div class="flex items-center gap-2 bg-midnight rounded-full px-2 py-0.5 border border-brandPurple/40">
+                  <button onclick="updateQty('${item.id}', -1)" class="text-xs font-bold text-slate-300 hover:text-white px-1">-</button>
+                  <span class="text-xs font-bold text-white">${item.qty}</span>
+                  <button onclick="updateQty('${item.id}', 1)" class="text-xs font-bold text-slate-300 hover:text-white px-1">+</button>
+                </div>
+              </div>
+            </div>
+          </div>
+        `).join('');
+      }
+
+      document.getElementById('cartSubtotal').innerText = `₹${totalAmount}`;
+      document.getElementById('cartTotal').innerText = `₹${totalAmount}`;
+
+      lucide.createIcons();
+    }
+
+    function toggleCart(open) {
+      const drawer = document.getElementById('cartDrawer');
+      const backdrop = document.getElementById('cartBackdrop');
+      if (open) {
+        backdrop.classList.remove('opacity-0', 'pointer-events-none');
+        backdrop.classList.add('opacity-100');
+        drawer.classList.remove('translate-x-full');
+      } else {
+        backdrop.classList.add('opacity-0', 'pointer-events-none');
+        backdrop.classList.remove('opacity-100');
+        drawer.classList.add('translate-x-full');
+      }
+    }
+
+    /* Checkout Decision Flow: Online UPI vs Cash on Takeaway */
+    function initiateOrderProcess() {
+      if (cart.length === 0) return;
+
+      const customerName = document.getElementById('custName').value.trim() || 'Counter Customer';
+      const customerPhone = document.getElementById('custPhone').value.trim() || 'Not Provided';
+      const slot = document.getElementById('pickupSlot').value;
+      const totalAmount = cart.reduce((sum, item) => sum + (item.price * item.qty), 0);
+      
+      const paymentChoice = document.querySelector('input[name="paymentOption"]:checked').value;
+      const tokenNumber = `#FF-${Math.floor(1000 + Math.random() * 9000)}`;
+      const orderDate = new Date().toLocaleString('en-IN', { dateStyle: 'medium', timeStyle: 'short' });
+
+      // Save order snapshot
+      lastOrderDetails = {
+        token: tokenNumber,
+        date: orderDate,
+        customer: customerName,
+        phone: customerPhone,
+        slot: slot,
+        paymentType: paymentChoice,
+        total: totalAmount,
+        items: JSON.parse(JSON.stringify(cart)),
+        utr: ''
+      };
+
+      if (paymentChoice === 'UPI') {
+        openUPIModal(totalAmount);
+      } else {
+        // Cash on takeaway flow: directly generate bill
+        toggleCart(false);
+        showBillModal('CASH');
+      }
+    }
+
+    /* UPI Modal Management */
+    function openUPIModal(amount) {
+      document.getElementById('upiModalAmount').innerText = `₹${amount}`;
+      
+      // Standard UPI intent URI with parameters
+      const upiUrl = `upi://pay?pa=${encodeURIComponent(UPI_ID)}&pn=${encodeURIComponent(BAKERY_NAME)}&am=${amount}&cu=INR&tn=Takeaway%20Order`;
+      
+      // Generate QR Code using dynamic QR Server service
+      const qrApiUrl = `https://api.qrserver.com/v1/create-qr-code/?size=240x240&data=${encodeURIComponent(upiUrl)}&margin=8`;
+      document.getElementById('upiQrImage').src = qrApiUrl;
+      
+      // Set link for mobile users
+      document.getElementById('upiIntentLink').href = upiUrl;
+
+      const modal = document.getElementById('upiModal');
+      modal.classList.remove('opacity-0', 'pointer-events-none');
+      modal.classList.add('opacity-100');
+    }
+
+    function closeUPIModal() {
+      const modal = document.getElementById('upiModal');
+      modal.classList.add('opacity-0', 'pointer-events-none');
+      modal.classList.remove('opacity-100');
+    }
+
+    function confirmUPIPayment() {
+      const utr = document.getElementById('upiRefInput').value.trim();
+      if (lastOrderDetails) {
+        lastOrderDetails.utr = utr || `UPI-TXN-${Date.now().toString().slice(-6)}`;
+      }
+
+      closeUPIModal();
+      toggleCart(false);
+      showBillModal('UPI');
+    }
+
+    /* Bill Modal & Proof Renderer */
+    function showBillModal(paymentType) {
+      if (!lastOrderDetails) return;
+
+      document.getElementById('billToken').innerText = lastOrderDetails.token;
+      document.getElementById('billDateTime').innerText = lastOrderDetails.date;
+      document.getElementById('billCustName').innerText = lastOrderDetails.customer;
+      document.getElementById('billCustPhone').innerText = lastOrderDetails.phone;
+      document.getElementById('billPickupSlot').innerText = lastOrderDetails.slot;
+      document.getElementById('billSubtotal').innerText = `₹${lastOrderDetails.total}`;
+      document.getElementById('billGrandTotal').innerText = `₹${lastOrderDetails.total}`;
+
+      // Populate item rows
+      const table = document.getElementById('billItemsTable');
+      table.innerHTML = lastOrderDetails.items.map(item => `
+        <div class="flex justify-between items-center text-[11px]">
+          <div class="max-w-[190px]">
+            <span class="font-bold text-white">${item.title}</span>
+            ${item.details ? `<span class="block text-[9px] text-purple-300">${item.details}</span>` : ''}
+          </div>
+          <span class="text-slate-400">${item.qty} x ₹${item.price}</span>
+          <span class="font-bold text-white">₹${item.qty * item.price}</span>
+        </div>
+      `).join('');
+
+      // Status Badge
+      const statusBox = document.getElementById('billPaymentStatusBox');
+      if (paymentType === 'UPI') {
+        statusBox.className = "mt-3 p-2.5 rounded-xl text-center border border-emerald-500/50 bg-emerald-950/60 text-emerald-400 text-xs font-bold space-y-0.5";
+        statusBox.innerHTML = `
+          <div class="flex items-center justify-center gap-1.5 text-xs uppercase tracking-wider">
+            <i data-lucide="check-check" class="w-4 h-4 text-emerald-400"></i>
+            <span>PAID ONLINE VIA UPI (PROOF VERIFIED)</span>
+          </div>
+          <p class="text-[10px] text-slate-300 font-mono">Merchant: ${UPI_ID}</p>
+          ${lastOrderDetails.utr ? `<p class="text-[10px] text-emerald-300 font-mono">Ref/UTR: ${lastOrderDetails.utr}</p>` : ''}
+        `;
+      } else {
+        statusBox.className = "mt-3 p-2.5 rounded-xl text-center border border-amber-500/50 bg-amber-950/60 text-amber-300 text-xs font-bold space-y-0.5";
+        statusBox.innerHTML = `
+          <div class="flex items-center justify-center gap-1.5 text-xs uppercase tracking-wider">
+            <i data-lucide="hand-coins" class="w-4 h-4 text-amber-400"></i>
+            <span>PAYMENT MODE: CASH ON TAKEAWAY</span>
+          </div>
+          <p class="text-[10px] text-slate-300">Amount Due: Pay ₹${lastOrderDetails.total} at Kunhimangalam counter</p>
+        `;
+      }
+
+      const modal = document.getElementById('billModal');
+      modal.classList.remove('opacity-0', 'pointer-events-none');
+      modal.classList.add('opacity-100');
+
+      confetti({
+        particleCount: 50,
+        spread: 60,
+        origin: { y: 0.6 }
+      });
+
+      lucide.createIcons();
+    }
+
+    function closeBillModal() {
+      const modal = document.getElementById('billModal');
+      modal.classList.add('opacity-0', 'pointer-events-none');
+      modal.classList.remove('opacity-100');
+    }
+
+    function closeBillModalAndReset() {
+      closeBillModal();
+      cart = [];
+      renderCart();
+      renderMenu();
+    }
+
+    /* Send copy of Bill / Proof directly to Bakery WhatsApp (8921806076) */
+    function shareBillOnWhatsApp() {
+      if (!lastOrderDetails) return;
+
+      let itemsFormatted = '';
+      lastOrderDetails.items.forEach((item, index) => {
+        itemsFormatted += `${index + 1}. ${item.title} [${item.qty} x ₹${item.price} = ₹${item.qty * item.price}]\n`;
+        if (item.details) {
+          itemsFormatted += `   ↳ Note: ${item.details}\n`;
+        }
+      });
+
+      const paymentBadge = lastOrderDetails.paymentType === 'UPI' 
+        ? `✅ PAID ONLINE VIA UPI\n• Merchant UPI: ${UPI_ID}\n• Ref/UTR: ${lastOrderDetails.utr || 'Instant UPI Transfer'}`
+        : `💵 CASH ON TAKEAWAY\n• Status: Pay ₹${lastOrderDetails.total} at Counter`;
+
+      const message = `*TAKEAWAY BILL & PROOF RECEIPT - FRESH AND FRESH BAKERY* 🧾
+*Token No:* ${lastOrderDetails.token}
+*Date & Time:* ${lastOrderDetails.date}
+*Location:* Kunhimangalam, Payyannur, Kannur
+----------------------------------------
+*Customer Name:* ${lastOrderDetails.customer}
+*Customer Phone:* ${lastOrderDetails.phone}
+*Pickup Slot:* ${lastOrderDetails.slot}
+*Service:* STRICTLY TAKEAWAY (Counter Pickup)
+----------------------------------------
+*ITEMIZED BILL:*
+${itemsFormatted}----------------------------------------
+*TOTAL AMOUNT:* ₹${lastOrderDetails.total}
+*PAYMENT STATUS:*
+${paymentBadge}
+----------------------------------------
+*Bakery Helpline:* 9847085553
+*WhatsApp:* 8921806076
+
+Kindly verify parcel readiness for counter collection!`;
+
+      const encoded = encodeURIComponent(message);
+      const whatsappUrl = `https://wa.me/${WHATSAPP_NUMBER}?text=${encoded}`;
+      window.open(whatsappUrl, '_blank');
+    }
+  </script>
+</body>
+</html>
